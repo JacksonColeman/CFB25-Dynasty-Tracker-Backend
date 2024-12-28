@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  dynasty_name: MyString
+  school_name: MyString
+  year: 1
+  user: one
+
+two:
+  dynasty_name: MyString
+  school_name: MyString
+  year: 1
+  user: two

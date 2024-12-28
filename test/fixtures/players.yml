@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  first_name: MyString
+  last_name: MyString
+  class_year: MyString
+  position: MyString
+  archetype: MyString
+  overall: 1
+  dev_trait: MyString
+  redshirted: false
+  current_redshirt: false
+  dynasty: one
+
+two:
+  first_name: MyString
+  last_name: MyString
+  class_year: MyString
+  position: MyString
+  archetype: MyString
+  overall: 1
+  dev_trait: MyString
+  redshirted: false
+  current_redshirt: false
+  dynasty: two
