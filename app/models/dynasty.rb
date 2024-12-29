@@ -1,6 +1,7 @@
 class Dynasty < ApplicationRecord
   belongs_to :user
   has_many :players, dependent: :destroy
+  has_many :recruits, dependent: :destroy
 
   VALID_YEARS = (2024..2054).to_a.freeze
 

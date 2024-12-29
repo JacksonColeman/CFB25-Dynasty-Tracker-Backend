@@ -1,6 +1,6 @@
 class DynastiesController < ApplicationController
   before_action :set_dynasty, only: %i[show update destroy ]
-  before_action :sweat_current_dynasty, only: %i[get_current_dynasty current_dynasty_players advance_class_years]
+  before_action :sweat_current_dynasty, only: %i[get_current_dynasty current_dynasty_players current_dynasty_recruits advance_class_years]
 
   # GET /dynasties
   def index
@@ -71,13 +71,22 @@ class DynastiesController < ApplicationController
     end
   end
 
+  def current_dynasty_recruits
+    if @current_dynasty
+      @recruits = @current_dynasty.recruits
+      render json: @recruits
+    else
+      render json: { error: "No active dynasty found" }, status: :unprocessable_entity
+    end
+  end
+
   # PUT /dynasties/advance_class_years
   def advance_class_years
     # Ensure we have the current dynasty
     if @current_dynasty
       # Iterate through all players in the current dynasty
       failed_players = []
-      
+
       @current_dynasty.players.each do |player|
         unless player.advance_class_year
           failed_players << player
@@ -88,7 +97,7 @@ class DynastiesController < ApplicationController
         render json: { error: "Failed to update some players", players: failed_players.map(&:id) }, status: :unprocessable_entity
       else
         @current_dynasty.update(year: @current_dynasty.year + 1)
-        render json: { message: 'All players class years advanced' }, status: :ok
+        render json: { message: "All players class years advanced" }, status: :ok
       end
     else
       render json: { error: "No active dynasty found" }, status: :unprocessable_entity

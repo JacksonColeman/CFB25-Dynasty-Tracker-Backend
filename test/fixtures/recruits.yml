@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  first_name: MyString
+  last_name: MyString
+  position: MyString
+  archetype: MyString
+  recruit_class: MyString
+  athlete: false
+  scouted: false
+  gem: false
+  bust: false
+  recruiting_stage: MyString
+  visit_week: 1
+  notes: MyString
+  dynasty: one
+
+two:
+  first_name: MyString
+  last_name: MyString
+  position: MyString
+  archetype: MyString
+  recruit_class: MyString
+  athlete: false
+  scouted: false
+  gem: false
+  bust: false
+  recruiting_stage: MyString
+  visit_week: 1
+  notes: MyString
+  dynasty: two

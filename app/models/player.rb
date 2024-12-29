@@ -9,11 +9,11 @@ class Player < ApplicationRecord
   validates :position, presence: true
   validates :archetype, presence: true
   validates :overall, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
-  validates :dev_trait, presence: true, inclusion: { in: %w[Normal Impact Star Elite], message: "%{value} is not a valid dev trait" }
+  # validates :dev_trait, presence: true, inclusion: { in: %w[Normal Impact Star Elite], message: "%{value} is not a valid dev trait" }
 
   # Redshirt validation: Ensure that current_redshirt cannot be true if redshirted is false
-  validates :redshirted, inclusion: { in: [true, false] }
-  validates :current_redshirt, inclusion: { in: [true, false] }
+  validates :redshirted, inclusion: { in: [ true, false ] }
+  validates :current_redshirt, inclusion: { in: [ true, false ] }
   validate :current_redshirt_logic
 
   # Callbacks (optional, if needed)
@@ -26,16 +26,16 @@ class Player < ApplicationRecord
     else
       # Advance the class year (freshman -> sophomore -> junior -> senior -> graduate)
       case class_year
-      when 'Freshman'
-        update(class_year: 'Sophomore')
-      when 'Sophomore'
-        update(class_year: 'Junior')
-      when 'Junior'
-        update(class_year: 'Senior')
-      when 'Senior'
-        update(class_year: 'Graduate')
-      when 'Graduate'
-        return true
+      when "Freshman"
+        update(class_year: "Sophomore")
+      when "Sophomore"
+        update(class_year: "Junior")
+      when "Junior"
+        update(class_year: "Senior")
+      when "Senior"
+        update(class_year: "Graduate")
+      when "Graduate"
+        true
       else
         # Handle unexpected class_year (optional, depending on your data)
         errors.add(:class_year, "Invalid class year")

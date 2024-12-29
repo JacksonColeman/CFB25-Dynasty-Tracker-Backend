@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_28_055231) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_28_231223) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,25 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_28_055231) do
     t.index ["dynasty_id"], name: "index_players_on_dynasty_id"
   end
 
+  create_table "recruits", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "position"
+    t.string "archetype"
+    t.string "recruit_class"
+    t.boolean "athlete"
+    t.boolean "scouted"
+    t.boolean "gem"
+    t.boolean "bust"
+    t.string "recruiting_stage"
+    t.integer "visit_week"
+    t.string "notes"
+    t.bigint "dynasty_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dynasty_id"], name: "index_recruits_on_dynasty_id"
+  end
+
   create_table "saves", force: :cascade do |t|
     t.string "save_name"
     t.string "school_name"
@@ -60,5 +79,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_28_055231) do
 
   add_foreign_key "dynasties", "users"
   add_foreign_key "players", "dynasties"
+  add_foreign_key "recruits", "dynasties"
   add_foreign_key "saves", "users"
 end

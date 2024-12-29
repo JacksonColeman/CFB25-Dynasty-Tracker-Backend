@@ -3,7 +3,8 @@ class User < ApplicationRecord
 
   has_many :dynasties, dependent: :destroy
   has_many :players, through: :dynasties, dependent: :destroy
-  
+  has_many :recruits, through: :dynasties, dependent: :destroy
+
   # Optional: Validations for email and username
   validates :email, presence: true, uniqueness: true
   validates :username, presence: true, uniqueness: true

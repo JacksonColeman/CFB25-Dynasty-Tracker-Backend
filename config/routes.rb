@@ -5,22 +5,25 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+    # Defines the root path route ("/")
+    # root "posts#index"
 
     # User routes (optional, can be used for user registration if needed)
     resources :users
-    get '/current_user', to: 'users#get_current_user'  # Route for current_user action
-    
-  # Get the current dynasty
-    post '/dynasties/set_current', to: 'dynasties#set_current_dynasty'
-    get '/dynasties/current', to: 'dynasties#get_current_dynasty'
-    get '/dynasties/current/players', to: 'dynasties#current_dynasty_players'
-    put '/dynasties/current/advance_class_years', to: 'dynasties#advance_class_years'
+    get "/current_user", to: "users#get_current_user"  # Route for current_user action
+
+    # Get the current dynasty
+    post "/dynasties/set_current", to: "dynasties#set_current_dynasty"
+    get "/dynasties/current", to: "dynasties#get_current_dynasty"
+    get "/dynasties/current/players", to: "dynasties#current_dynasty_players"
+    get "/dynasties/current/recruits", to: "dynasties#current_dynasty_recruits"
+    put "/dynasties/current/advance_class_years", to: "dynasties#advance_class_years"
+    patch "/recruits/:id/convert_to_player", to: "recruits#convert_to_player"
 
     resources :dynasties do
       member do
         get :current_dynasty_players
+        get :current_dynasty_recruits
       end
       collection do
         get :get_current_dynasty
@@ -29,8 +32,8 @@ Rails.application.routes.draw do
 
 
     resources :players
-  
+    resources :recruits
+
     # Session routes for login/logout
-    resource :session, only: [:create, :destroy]
-  
+    resource :session, only: [ :create, :destroy ]
 end
