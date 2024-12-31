@@ -8,6 +8,7 @@ class User < ApplicationRecord
   # Optional: Validations for email and username
   validates :email, presence: true, uniqueness: true
   validates :username, presence: true, uniqueness: true
+  validates :password, length: { minimum: 8 }, allow_nil: true
 
   def active_dynasty
     Dynasty.find_by(id: self.current_dynasty_id)

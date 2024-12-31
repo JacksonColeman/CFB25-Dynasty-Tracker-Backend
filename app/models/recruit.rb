@@ -8,6 +8,7 @@ class Recruit < ApplicationRecord
   validates :recruit_class, presence: true, inclusion: { in: [ "High School", "JUCO (FR)", "JUCO (SO)", "Transfer (FR)", "Transfer (SO)", "Transfer (JR)" ] }
   validates :recruiting_stage, presence: true, inclusion: { in: [ "Open", "Top 8", "Top 5", "Top 3", "Committed" ] }
   validates :visit_week, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :star_rating, presence: true, inclusion: { in: 1..5 }
 
   # validates :athlete, inclusion: { in: [ true, false ] }
   # validates :scouted, inclusion: { in: [ true, false ] }
@@ -19,6 +20,7 @@ class Recruit < ApplicationRecord
     overall = params[:overall]
     position = params[:position]
     dev_trait = params[:dev_trait]
+    archetype = params[:archetype]
   # Convert recruit_class to class_year
   class_year = case recruit_class
   when "High School" then "Freshman"

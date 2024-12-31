@@ -5,8 +5,7 @@ class UsersController < ApplicationController
 
     if @user.save
       # Automatically log the user in after registration
-      session[:user_id] = @user.id
-      render json: { message: "User created and logged in successfully" }, status: :created
+      render json: { success: true, message: "User created successfully" }, status: :created
     else
       render json: { error: @user.errors.full_messages }, status: :unprocessable_entity
     end

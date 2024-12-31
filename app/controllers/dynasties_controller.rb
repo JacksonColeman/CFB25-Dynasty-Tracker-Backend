@@ -41,6 +41,7 @@ class DynastiesController < ApplicationController
 
   # Sets the current dynasty
   def set_current_dynasty
+    Rails.logger.debug "Params received: #{params.inspect}" # Debug log
     dynasty = Dynasty.find_by(id: params[:id])
 
     if dynasty && dynasty.user_id == current_user.id
@@ -108,6 +109,7 @@ class DynastiesController < ApplicationController
 
   # Find and set the current dynasty based on session
   def sweat_current_dynasty
+    Rails.logger.info "Session Data: #{session.to_hash}"
     dynasty_id = session[:current_dynasty_id]
     if dynasty_id
       @current_dynasty = Dynasty.find_by(id: dynasty_id)

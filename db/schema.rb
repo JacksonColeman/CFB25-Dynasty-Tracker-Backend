@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_28_231223) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_29_002246) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_28_231223) do
     t.bigint "dynasty_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "star_rating"
     t.index ["dynasty_id"], name: "index_recruits_on_dynasty_id"
   end
 

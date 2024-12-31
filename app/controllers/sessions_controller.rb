@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
 
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id  # Store the user's ID in the session
-      render json: { message: "Logged in successfully" }, status: :ok
+      render json: { message: "Logged in successfully", user: @user.as_json(except: [:password_digest])  }, status: :ok
     else
       render json: { error: "Invalid username or password" }, status: :unauthorized
     end
@@ -13,7 +13,8 @@ class SessionsController < ApplicationController
 
   # Log the user out
   def destroy
-    session.delete(:user_id)  # Remove the user ID from the session
+    # session.delete(:user_id)  # Remove the user ID from the session
+    reset_session
     render json: { message: "Logged out successfully" }, status: :ok
   end
 end

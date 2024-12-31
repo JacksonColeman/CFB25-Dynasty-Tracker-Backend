@@ -71,14 +71,15 @@ class RecruitsController < ApplicationController
     end
 
     # Log the incoming parameters
-    Rails.logger.debug "Received parameters: overall=#{params[:overall]}, position=#{params[:position]}, dev_trait=#{params[:dev_trait]}"
+    Rails.logger.debug "Received parameters: overall=#{params[:overall]}, position=#{params[:position]}, dev_trait=#{params[:dev_trait]}, archetype=#{params[:archetype]}"
 
     begin
       # Perform the conversion to player
       @recruit.turn_into_player(
         overall: params[:overall],
         position: params[:position],
-        dev_trait: params[:dev_trait]
+        dev_trait: params[:dev_trait],
+        archetype: params[:archetype]
       )
 
       Rails.logger.debug "Successfully converted recruit #{@recruit.id} to player"
@@ -124,6 +125,7 @@ class RecruitsController < ApplicationController
       :bust,
       :recruiting_stage,
       :visit_week,
+      :star_rating,
       :notes
     )
   end
