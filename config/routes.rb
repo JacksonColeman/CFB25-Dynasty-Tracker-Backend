@@ -18,7 +18,11 @@ Rails.application.routes.draw do
     get "/dynasties/current/players", to: "dynasties#current_dynasty_players"
     get "/dynasties/current/recruits", to: "dynasties#current_dynasty_recruits"
     put "/dynasties/current/advance_class_years", to: "dynasties#advance_class_years"
+    delete "/dynasties/current/clear_graduates", to: "dynasties#clear_graduates"
+    delete "/dynasties/current/clear_roster", to: "dynasties#clear_roster"
     patch "/recruits/:id/convert_to_player", to: "recruits#convert_to_player"
+    patch "/dynasties/current/bulk_update_players", to: "dynasties#bulk_update_players"
+    patch "/dynasties/current/bulk_update_redshirt", to: "dynasties#bulk_update_redshirt"
 
     resources :dynasties do
       member do

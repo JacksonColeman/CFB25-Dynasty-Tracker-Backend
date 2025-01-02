@@ -1,6 +1,6 @@
 class DynastiesController < ApplicationController
   before_action :set_dynasty, only: %i[show update destroy ]
-  before_action :sweat_current_dynasty, only: %i[get_current_dynasty current_dynasty_players current_dynasty_recruits advance_class_years]
+  before_action :sweat_current_dynasty, only: %i[get_current_dynasty current_dynasty_players current_dynasty_recruits advance_class_years clear_graduates clear_roster bulk_update_players bulk_update_redshirt]
 
   # GET /dynasties
   def index
@@ -104,6 +104,91 @@ class DynastiesController < ApplicationController
       render json: { error: "No active dynasty found" }, status: :unprocessable_entity
     end
   end
+
+  def clear_graduates
+    if @current_dynasty
+      # Delete all players where class_year is 'Graduate'
+      graduates = @current_dynasty.players.where(class_year: 'Graduate')
+      graduates.destroy_all
+  
+      render json: { message: "#{graduates.count} graduates cleared from the roster" }, status: :ok
+    else
+      render json: { error: "No active dynasty found" }, status: :unprocessable_entity
+    end
+  end
+
+  def clear_roster
+    if @current_dynasty
+      roster = @current_dynasty.players
+      roster.destroy_all
+
+      render json: {message: "Roster cleared"}, status: :ok
+    else
+      render json: {error: "No active dynasty found"}, status: :unprocessable_entity
+    end
+  end
+
+  def bulk_update_players
+    if @current_dynasty
+      begin
+        updated_count = 0
+        
+        @current_dynasty.players.transaction do
+          params[:players].each do |player_params|
+            player = @current_dynasty.players.find(player_params[:id])
+            
+            if player.update!(overall: player_params[:overall], position: player_params[:position], archetype: player_params[:archetype])
+              updated_count += 1
+            end
+          end
+        end
+  
+        render json: { 
+          message: "Successfully updated #{updated_count} players' overalls, positions, and archetypes",
+          updated_count: updated_count 
+        }, status: :ok
+  
+      rescue ActiveRecord::RecordNotFound => e
+        render json: { error: "Could not find one or more players" }, status: :not_found
+      rescue ActiveRecord::RecordInvalid => e
+        render json: { error: e.message }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: "No active dynasty found" }, status: :unprocessable_entity
+    end
+  end
+
+  def bulk_update_redshirt
+    if @current_dynasty
+      begin
+        updated_count = 0
+  
+        @current_dynasty.players.transaction do
+          params[:players].each do |player_params|
+            player = @current_dynasty.players.find(player_params[:id])
+  
+            # Update only the current_redshirt attribute
+            if player.update!(current_redshirt: player_params[:current_redshirt])
+              updated_count += 1
+            end
+          end
+        end
+  
+        render json: { 
+          message: "Successfully updated #{updated_count} players' current_redshirt status",
+          updated_count: updated_count 
+        }, status: :ok
+  
+      rescue ActiveRecord::RecordNotFound => e
+        render json: { error: "Could not find one or more players" }, status: :not_found
+      rescue ActiveRecord::RecordInvalid => e
+        render json: { error: e.message }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: "No active dynasty found" }, status: :unprocessable_entity
+    end
+  end
+  
 
   private
 
