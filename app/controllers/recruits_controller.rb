@@ -45,9 +45,14 @@ class RecruitsController < ApplicationController
 
   # PATCH/PUT /recruits/:id
   def update
+    Rails.logger.info("Updating recruit with ID: #{@recruit.id}")
+    Rails.logger.info("Received params: #{recruit_params.inspect}")
+    
     if @recruit.update(recruit_params)
+      Rails.logger.info("Recruit updated successfully: #{@recruit.inspect}")
       render json: @recruit
     else
+      Rails.logger.error("Failed to update recruit: #{@recruit.errors.full_messages}")
       render json: { error: @recruit.errors.full_messages }, status: :unprocessable_entity
     end
   end

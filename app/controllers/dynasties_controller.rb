@@ -1,6 +1,6 @@
 class DynastiesController < ApplicationController
   before_action :set_dynasty, only: %i[show update destroy ]
-  before_action :sweat_current_dynasty, only: %i[get_current_dynasty current_dynasty_players current_dynasty_recruits advance_class_years clear_graduates clear_roster bulk_update_players bulk_update_redshirt]
+  before_action :sweat_current_dynasty, only: %i[get_current_dynasty current_dynasty_players current_dynasty_recruits advance_class_years clear_graduates clear_roster clear_recruits bulk_update_players bulk_update_redshirt bulk_convert_to_players]
 
   # GET /dynasties
   def index
@@ -128,6 +128,17 @@ class DynastiesController < ApplicationController
     end
   end
 
+  def clear_recruits
+    if @current_dynasty
+      recruits = @current_dynasty.recruits
+      recruits.destroy_all
+
+      render json: {message: "Recruits cleared"}, status: :ok
+    else
+      render json: {error: "No active dynasty found"}, status: :unprocessable_entity
+    end
+  end
+
   def bulk_update_players
     if @current_dynasty
       begin
@@ -181,6 +192,42 @@ class DynastiesController < ApplicationController
   
       rescue ActiveRecord::RecordNotFound => e
         render json: { error: "Could not find one or more players" }, status: :not_found
+      rescue ActiveRecord::RecordInvalid => e
+        render json: { error: e.message }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: "No active dynasty found" }, status: :unprocessable_entity
+    end
+  end
+
+  def bulk_convert_to_players
+    if @current_dynasty
+      begin
+        converted_count = 0
+  
+        @current_dynasty.recruits.transaction do
+          params[:recruits].each do |recruit_params|
+            recruit = @current_dynasty.recruits.find(recruit_params[:id])
+  
+            # Pass recruit details to turn_into_player method
+            if recruit.turn_into_player(
+              overall: recruit_params[:overall],
+              position: recruit_params[:position],
+              dev_trait: recruit_params[:dev_trait],
+              archetype: recruit_params[:archetype]
+            )
+              converted_count += 1
+            end
+          end
+        end
+  
+        render json: {
+          message: "Successfully converted #{converted_count} recruits to players",
+          converted_count: converted_count
+        }, status: :ok
+  
+      rescue ActiveRecord::RecordNotFound => e
+        render json: { error: "Could not find one or more recruits" }, status: :not_found
       rescue ActiveRecord::RecordInvalid => e
         render json: { error: e.message }, status: :unprocessable_entity
       end

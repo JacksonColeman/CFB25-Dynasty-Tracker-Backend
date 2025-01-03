@@ -22,28 +22,28 @@ class Recruit < ApplicationRecord
     dev_trait = params[:dev_trait]
     archetype = params[:archetype]
   # Convert recruit_class to class_year
-  class_year = case recruit_class
-  when "High School" then "Freshman"
-  when "JUCO (FR)" then "Freshman"
-  when "JUCO (SO)" then "Sophomore"
-  when "Transfer (FR)" then "Sophomore"
-  when "Transfer (SO)" then "Junior"
-  when "Transfer (JR)" then "Senior"
-  else "Unknown"  # Default value in case no match is found
-  end
+    class_year = case recruit_class
+    when "High School" then "Freshman"
+    when "JUCO (FR)" then "Freshman"
+    when "JUCO (SO)" then "Sophomore"
+    when "Transfer (FR)" then "Sophomore"
+    when "Transfer (SO)" then "Junior"
+    when "Transfer (JR)" then "Senior"
+    else "Unknown"  # Default value in case no match is found
+    end
 
-    Player.create!(
-      first_name: first_name,
-      last_name: last_name,
-      position: position,
-      archetype: archetype,
-      overall: overall,
-      dev_trait: dev_trait,
-      class_year: class_year,  # Add the converted class_year
-      redshirted: false,
-      current_redshirt: false,
-      dynasty: dynasty
-    )
+      Player.create!(
+        first_name: first_name,
+        last_name: last_name,
+        position: position,
+        archetype: archetype,
+        overall: overall,
+        dev_trait: dev_trait,
+        class_year: class_year,  # Add the converted class_year
+        redshirted: false,
+        current_redshirt: false,
+        dynasty: dynasty
+      )
     destroy
   end
 end
