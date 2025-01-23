@@ -27,6 +27,8 @@ Rails.application.routes.draw do
     patch "/dynasties/current/bulk_update_redshirt", to: "dynasties#bulk_update_redshirt"
     patch "dynasties/current/bulk_convert_to_players", to: 'dynasties#bulk_convert_to_players'
 
+    delete '/dynasties/current/players', to: "dynasties#delete_selected_players"
+
     ### Dynasty recruit methods
     # Clear all
     # Bulk convert 

@@ -1,6 +1,6 @@
 class DynastiesController < ApplicationController
   before_action :set_dynasty, only: %i[show update destroy ]
-  before_action :sweat_current_dynasty, only: %i[get_current_dynasty current_dynasty_players current_dynasty_recruits advance_class_years clear_graduates clear_roster clear_recruits bulk_update_players bulk_update_redshirt bulk_convert_to_players]
+  before_action :sweat_current_dynasty, only: %i[get_current_dynasty current_dynasty_players current_dynasty_recruits advance_class_years clear_graduates clear_roster clear_recruits bulk_update_players bulk_update_redshirt bulk_convert_to_players delete_selected_players]
 
   # GET /dynasties
   def index
@@ -235,7 +235,35 @@ class DynastiesController < ApplicationController
       render json: { error: "No active dynasty found" }, status: :unprocessable_entity
     end
   end
+
   
+  def delete_selected_players
+    if @current_dynasty
+      begin
+        deleted_count = 0
+        
+        @current_dynasty.players.transaction do
+          params[:player_ids].each do |player_id|
+            player = @current_dynasty.players.find(player_id)
+            player.destroy
+            deleted_count += 1
+          end
+        end
+
+        render json: {
+          message: "Successfully deleted #{deleted_count} players",
+          deleted_count: deleted_count
+        }, status: :ok
+
+      rescue ActiveRecord::RecordNotFound => e
+        render json: { error: "Could not find one or more players with the provided IDs" }, status: :not_found
+      rescue => e
+        render json: { error: e.message }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: "No active dynasty found" }, status: :unprocessable_entity
+    end
+  end
 
   private
 
