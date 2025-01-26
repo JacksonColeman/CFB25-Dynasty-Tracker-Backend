@@ -16,8 +16,11 @@ class Player < ApplicationRecord
   validates :current_redshirt, inclusion: { in: [ true, false ] }
   validate :current_redshirt_logic
 
-  # Callbacks (optional, if needed)
-  # You can add a callback to set the default values or enforce other logic before creating/updating a player
+  validates :height, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :weight, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :skill_caps, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :hometown, length: { maximum: 40 }, allow_nil: true
+  validates :home_state, length: { maximum: 3 }, allow_nil: true
 
   def advance_class_year
     if current_redshirt

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_29_002246) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_26_024410) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -37,6 +37,11 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_29_002246) do
     t.bigint "dynasty_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "height"
+    t.integer "weight"
+    t.integer "skill_caps"
+    t.string "hometown"
+    t.string "home_state"
     t.index ["dynasty_id"], name: "index_players_on_dynasty_id"
   end
 

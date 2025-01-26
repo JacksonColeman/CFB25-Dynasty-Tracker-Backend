@@ -71,7 +71,12 @@ class PlayersController < ApplicationController
       :overall,
       :dev_trait,
       :redshirted,
-      :current_redshirt
+      :current_redshirt,
+      :height,
+      :weight,
+      :skill_caps,
+      :hometown,
+      :home_state
     )
   end
 end
