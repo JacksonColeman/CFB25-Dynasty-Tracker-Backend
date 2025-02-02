@@ -1,6 +1,6 @@
 class DynastiesController < ApplicationController
   before_action :set_dynasty, only: %i[show update destroy ]
-  before_action :sweat_current_dynasty, only: %i[get_current_dynasty current_dynasty_players current_dynasty_recruits advance_class_years clear_graduates clear_roster clear_recruits bulk_update_players bulk_update_redshirt bulk_convert_to_players delete_selected_players]
+  before_action :sweat_current_dynasty, only: %i[get_current_dynasty current_dynasty_players current_dynasty_recruits advance_class_years clear_graduates clear_roster clear_recruits bulk_update_players bulk_update_redshirt bulk_convert_to_players delete_selected_players graduate_seniors]
 
   # GET /dynasties
   def index
@@ -112,6 +112,20 @@ class DynastiesController < ApplicationController
       graduates.destroy_all
   
       render json: { message: "#{graduates.count} graduates cleared from the roster" }, status: :ok
+    else
+      render json: { error: "No active dynasty found" }, status: :unprocessable_entity
+    end
+  end
+
+  def graduate_seniors
+    if @current_dynasty
+      # Find all seniors who are currently redshirted
+      seniors = @current_dynasty.players.where(class_year: 'Senior', current_redshirt: false)
+      
+      # Destroy all found seniors
+      seniors.destroy_all
+  
+      render json: { message: "#{seniors.count} non-redshirted seniors graduated and cleared from the roster" }, status: :ok
     else
       render json: { error: "No active dynasty found" }, status: :unprocessable_entity
     end

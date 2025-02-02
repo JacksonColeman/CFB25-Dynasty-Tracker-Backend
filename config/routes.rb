@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     get "/dynasties/current/recruits", to: "dynasties#current_dynasty_recruits"
     put "/dynasties/current/advance_class_years", to: "dynasties#advance_class_years"
     delete "/dynasties/current/clear_graduates", to: "dynasties#clear_graduates"
+    delete "/dynasties/current/graduate_players", to: "dynasties#graduate_players"
     delete "/dynasties/current/clear_roster", to: "dynasties#clear_roster"
     delete "/dynasties/current/clear_recruits", to: "dynasties#clear_recruits"
     patch "/recruits/:id/convert_to_player", to: "recruits#convert_to_player"
