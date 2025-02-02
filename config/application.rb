@@ -33,5 +33,15 @@ module Cfb25DynastyTrackerBackend
     config.middleware.use ActionDispatch::Session::CookieStore, key: "_dynasty_tracker_session"
 
     config.session_store :cookie_store, key: "_dynasty_tracker_session"
+
+    config.action_dispatch.cookies_same_site_protection = :none
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins 'https://cfb-dynasty-tracker.netlify.app' # Update with your React frontend origin
+        resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options, :head], credentials: true
+      end
+    end
+
   end
 end
