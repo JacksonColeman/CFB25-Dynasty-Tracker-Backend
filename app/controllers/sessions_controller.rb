@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
 
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id  # Store the user's ID in the session
-      render json: { message: "Logged in successfully", user: @user.as_json(except: [:password_digest])  }, status: :ok
+      render json: { message: "Logged in successfully", user: @user.as_json(except: [ :password_digest ])  }, status: :ok
     else
       render json: { error: "Invalid username or password" }, status: :unauthorized
     end

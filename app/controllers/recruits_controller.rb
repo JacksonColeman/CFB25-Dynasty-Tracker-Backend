@@ -47,7 +47,7 @@ class RecruitsController < ApplicationController
   def update
     Rails.logger.info("Updating recruit with ID: #{@recruit.id}")
     Rails.logger.info("Received params: #{recruit_params.inspect}")
-    
+
     if @recruit.update(recruit_params)
       Rails.logger.info("Recruit updated successfully: #{@recruit.inspect}")
       render json: @recruit

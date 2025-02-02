@@ -6,10 +6,10 @@ class User < ApplicationRecord
   has_many :recruits, through: :dynasties, dependent: :destroy
 
   # Optional: Validations for email and username
-  validates :email, presence: true, uniqueness: true, format: { 
-    with: /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\z/, 
+  validates :email, presence: true, uniqueness: true, format: {
+    with: /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\z/,
     message: "must be a valid email address"
-  }  
+  }
   validates :username, presence: true, uniqueness: true
   validates :password, length: { minimum: 8 }, allow_nil: true
 

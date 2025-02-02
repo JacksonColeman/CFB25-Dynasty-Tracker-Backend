@@ -21,7 +21,7 @@ class Recruit < ApplicationRecord
     position = params[:position]
     dev_trait = params[:dev_trait]
     archetype = params[:archetype]
-  # Convert recruit_class to class_year
+    # Convert recruit_class to class_year
     class_year = case recruit_class
     when "High School" then "Freshman"
     when "JUCO (FR)" then "Freshman"

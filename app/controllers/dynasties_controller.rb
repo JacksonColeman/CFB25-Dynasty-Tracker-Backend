@@ -108,9 +108,9 @@ class DynastiesController < ApplicationController
   def clear_graduates
     if @current_dynasty
       # Delete all players where class_year is 'Graduate'
-      graduates = @current_dynasty.players.where(class_year: 'Graduate')
+      graduates = @current_dynasty.players.where(class_year: "Graduate")
       graduates.destroy_all
-  
+
       render json: { message: "#{graduates.count} graduates cleared from the roster" }, status: :ok
     else
       render json: { error: "No active dynasty found" }, status: :unprocessable_entity
@@ -120,11 +120,11 @@ class DynastiesController < ApplicationController
   def graduate_seniors
     if @current_dynasty
       # Find all seniors who are currently redshirted
-      seniors = @current_dynasty.players.where(class_year: 'Senior', current_redshirt: false)
-      
+      seniors = @current_dynasty.players.where(class_year: "Senior", current_redshirt: false)
+
       # Destroy all found seniors
       seniors.destroy_all
-  
+
       render json: { message: "#{seniors.count} non-redshirted seniors graduated and cleared from the roster" }, status: :ok
     else
       render json: { error: "No active dynasty found" }, status: :unprocessable_entity
@@ -136,9 +136,9 @@ class DynastiesController < ApplicationController
       roster = @current_dynasty.players
       roster.destroy_all
 
-      render json: {message: "Roster cleared"}, status: :ok
+      render json: { message: "Roster cleared" }, status: :ok
     else
-      render json: {error: "No active dynasty found"}, status: :unprocessable_entity
+      render json: { error: "No active dynasty found" }, status: :unprocessable_entity
     end
   end
 
@@ -147,9 +147,9 @@ class DynastiesController < ApplicationController
       recruits = @current_dynasty.recruits
       recruits.destroy_all
 
-      render json: {message: "Recruits cleared"}, status: :ok
+      render json: { message: "Recruits cleared" }, status: :ok
     else
-      render json: {error: "No active dynasty found"}, status: :unprocessable_entity
+      render json: { error: "No active dynasty found" }, status: :unprocessable_entity
     end
   end
 
@@ -157,22 +157,22 @@ class DynastiesController < ApplicationController
     if @current_dynasty
       begin
         updated_count = 0
-        
+
         @current_dynasty.players.transaction do
           params[:players].each do |player_params|
             player = @current_dynasty.players.find(player_params[:id])
-            
+
             if player.update!(overall: player_params[:overall], position: player_params[:position], archetype: player_params[:archetype])
               updated_count += 1
             end
           end
         end
-  
-        render json: { 
+
+        render json: {
           message: "Successfully updated #{updated_count} players' overalls, positions, and archetypes",
-          updated_count: updated_count 
+          updated_count: updated_count
         }, status: :ok
-  
+
       rescue ActiveRecord::RecordNotFound => e
         render json: { error: "Could not find one or more players" }, status: :not_found
       rescue ActiveRecord::RecordInvalid => e
@@ -187,23 +187,23 @@ class DynastiesController < ApplicationController
     if @current_dynasty
       begin
         updated_count = 0
-  
+
         @current_dynasty.players.transaction do
           params[:players].each do |player_params|
             player = @current_dynasty.players.find(player_params[:id])
-  
+
             # Update only the current_redshirt attribute
             if player.update!(current_redshirt: player_params[:current_redshirt])
               updated_count += 1
             end
           end
         end
-  
-        render json: { 
+
+        render json: {
           message: "Successfully updated #{updated_count} players' current_redshirt status",
-          updated_count: updated_count 
+          updated_count: updated_count
         }, status: :ok
-  
+
       rescue ActiveRecord::RecordNotFound => e
         render json: { error: "Could not find one or more players" }, status: :not_found
       rescue ActiveRecord::RecordInvalid => e
@@ -218,11 +218,11 @@ class DynastiesController < ApplicationController
     if @current_dynasty
       begin
         converted_count = 0
-  
+
         @current_dynasty.recruits.transaction do
           params[:recruits].each do |recruit_params|
             recruit = @current_dynasty.recruits.find(recruit_params[:id])
-  
+
             # Pass recruit details to turn_into_player method
             if recruit.turn_into_player(
               overall: recruit_params[:overall],
@@ -234,12 +234,12 @@ class DynastiesController < ApplicationController
             end
           end
         end
-  
+
         render json: {
           message: "Successfully converted #{converted_count} recruits to players",
           converted_count: converted_count
         }, status: :ok
-  
+
       rescue ActiveRecord::RecordNotFound => e
         render json: { error: "Could not find one or more recruits" }, status: :not_found
       rescue ActiveRecord::RecordInvalid => e
@@ -250,12 +250,12 @@ class DynastiesController < ApplicationController
     end
   end
 
-  
+
   def delete_selected_players
     if @current_dynasty
       begin
         deleted_count = 0
-        
+
         @current_dynasty.players.transaction do
           params[:player_ids].each do |player_id|
             player = @current_dynasty.players.find(player_id)

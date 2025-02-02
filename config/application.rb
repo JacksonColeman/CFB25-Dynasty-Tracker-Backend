@@ -30,8 +30,8 @@ module Cfb25DynastyTrackerBackend
     config.api_only = true
 
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore, key: '_dynasty_tracker_session'
-    
-    config.session_store :cookie_store, key: '_dynasty_tracker_session'
+    config.middleware.use ActionDispatch::Session::CookieStore, key: "_dynasty_tracker_session"
+
+    config.session_store :cookie_store, key: "_dynasty_tracker_session"
   end
 end
