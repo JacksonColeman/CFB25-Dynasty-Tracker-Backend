@@ -4,6 +4,7 @@ class DynastiesController < ApplicationController
 
   # GET /dynasties
   def index
+    logger.debug "Current User: #{current_user.inspect}"
     @dynasties = current_user.dynasties
     render json: @dynasties
   end

@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     delete "/dynasties/current/clear_roster", to: "dynasties#clear_roster"
     delete "/dynasties/current/clear_recruits", to: "dynasties#clear_recruits"
     patch "/recruits/:id/convert_to_player", to: "recruits#convert_to_player"
+    delete "/dynasties/current/graduate_seniors", to: "dynasties#graduate_seniors"
 
     patch "/dynasties/current/bulk_update_players", to: "dynasties#bulk_update_players"
     patch "/dynasties/current/bulk_update_redshirt", to: "dynasties#bulk_update_redshirt"
